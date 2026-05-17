@@ -3,76 +3,7 @@
 import reflex as rx
 
 from .. import styles
-
-
-def menu_item_icon(icon: str) -> rx.Component:
-    return rx.icon(icon, size=20)
-
-
-def menu_item(text: str, url: str) -> rx.Component:
-    """Menu item.
-
-    Args:
-        text: The text of the item.
-        url: The URL of the item.
-
-    Returns:
-        rx.Component: The menu item component.
-
-    """
-    # Whether the item is active.
-    active = (rx.State.router.page.path == url.lower()) | (
-        (rx.State.router.page.path == "/") & text == "Overview"
-    )
-
-    return rx.link(
-        rx.hstack(
-            rx.match(
-                text,
-                ("Overview", menu_item_icon("home")),
-                ("Table", menu_item_icon("table-2")),
-                ("About", menu_item_icon("book-open")),
-                ("Profile", menu_item_icon("user")),
-                ("Settings", menu_item_icon("settings")),
-                menu_item_icon("layout-dashboard"),
-            ),
-            rx.text(text, size="4", weight="regular"),
-            color=rx.cond(
-                active,
-                styles.accent_text_color,
-                styles.text_color,
-            ),
-            style={
-                "_hover": {
-                    "background_color": rx.cond(
-                        active,
-                        styles.accent_bg_color,
-                        styles.gray_bg_color,
-                    ),
-                    "color": rx.cond(
-                        active,
-                        styles.accent_text_color,
-                        styles.text_color,
-                    ),
-                    "opacity": "1",
-                },
-                "opacity": rx.cond(
-                    active,
-                    "1",
-                    "0.95",
-                ),
-            },
-            align="center",
-            border_radius=styles.border_radius,
-            width="100%",
-            spacing="2",
-            padding="0.6em",
-            padding_left="0.85em",
-        ),
-        underline="none",
-        href=url,
-        width="100%",
-    )
+from .navigation import nav_sections
 
 
 def navbar_footer() -> rx.Component:
@@ -99,31 +30,6 @@ def navbar_footer() -> rx.Component:
 
 
 def menu_button() -> rx.Component:
-    from reflex.page import DECORATED_PAGES
-
-    ordered_page_routes = [
-        "/",
-        "/table",
-        "/about",
-        "/profile",
-        "/settings",
-    ]
-
-    pages = [
-        page_dict
-        for page_list in DECORATED_PAGES.values()
-        for _, page_dict in page_list
-    ]
-
-    ordered_pages = sorted(
-        pages,
-        key=lambda page: (
-            ordered_page_routes.index(page["route"])
-            if page["route"] in ordered_page_routes
-            else len(ordered_page_routes)
-        ),
-    )
-
     return rx.drawer.root(
         rx.drawer.trigger(
             rx.icon("align-justify"),
@@ -133,7 +39,7 @@ def menu_button() -> rx.Component:
             rx.drawer.content(
                 rx.vstack(
                     rx.hstack(
-                        rx.heading("WellOps", size="5", weight="bold"),
+                        rx.heading("Well-Ops", size="5", weight="bold"),
                         rx.spacer(),
                         rx.drawer.close(rx.icon(tag="x")),
                         justify="end",
@@ -143,15 +49,12 @@ def menu_button() -> rx.Component:
                     ),
                     rx.divider(),
                     rx.vstack(
-                        *[
-                            menu_item(
-                                text=page.get(
-                                    "title", page["route"].strip("/").capitalize()
-                                ),
-                                url=page["route"],
-                            )
-                            for page in ordered_pages
-                        ],
+                        *nav_sections(
+                            child_padding_left="2em",
+                            icon_size=20,
+                            padding_left="0.85em",
+                            text_size="4",
+                        ),
                         spacing="1",
                         width="100%",
                         padding_top="0.5em",
@@ -185,7 +88,6 @@ def navbar() -> rx.Component:
         rx.hstack(
             menu_button(),
             rx.spacer(),
-            # The logo.
             rx.color_mode_cond(
                 rx.image(src="/reflex_black.svg", height="0.25em"),
                 rx.image(src="/reflex_white.svg", height="0.25em"),

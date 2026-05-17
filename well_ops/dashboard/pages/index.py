@@ -19,7 +19,7 @@ from ..views.charts import (
     users_chart,
 )
 from ..views.stats_cards import stats_cards
-from .profile import ProfileState
+from .settings.profile import ProfileState
 
 
 def _time_data() -> rx.Component:

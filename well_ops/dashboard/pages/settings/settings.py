@@ -2,13 +2,13 @@
 
 import reflex as rx
 
-from ..templates import template
-from ..views.color_picker import primary_color_picker, secondary_color_picker
-from ..views.radius_picker import radius_picker
-from ..views.scaling_picker import scaling_picker
+from ...templates import template
+from ...views.color_picker import primary_color_picker, secondary_color_picker
+from ...views.radius_picker import radius_picker
+from ...views.scaling_picker import scaling_picker
 
 
-@template(route="/settings", title="Settings")
+@template(route="/settings/settings", title="Settings")
 def settings() -> rx.Component:
     """The settings page.
 
@@ -18,7 +18,6 @@ def settings() -> rx.Component:
     """
     return rx.vstack(
         rx.heading("Settings", size="5"),
-        # Primary color picker
         rx.vstack(
             rx.hstack(
                 rx.icon("palette", color=rx.color("accent", 10)),
@@ -29,7 +28,6 @@ def settings() -> rx.Component:
             spacing="4",
             width="100%",
         ),
-        # Secondary color picker
         rx.vstack(
             rx.hstack(
                 rx.icon("blend", color=rx.color("gray", 11)),
@@ -40,9 +38,7 @@ def settings() -> rx.Component:
             spacing="4",
             width="100%",
         ),
-        # Radius picker
         radius_picker(),
-        # Scaling picker
         scaling_picker(),
         spacing="7",
         width="100%",

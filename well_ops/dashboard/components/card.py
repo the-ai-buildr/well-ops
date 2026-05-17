@@ -7,7 +7,7 @@ def card(*children, **props):
     return rx.card(
         *children,
         box_shadow=styles.box_shadow_style,
-        size="2",
+        size="1",
         width="100%",
         **props,
     )

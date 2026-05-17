@@ -4,8 +4,8 @@ from dataclasses import dataclass
 
 import reflex as rx
 
-from ..components.profile_input import profile_input
-from ..templates import template
+from ...components.profile_input import profile_input
+from ...templates import template
 
 
 @dataclass
@@ -26,7 +26,7 @@ class ProfileState(rx.State):
         self.profile.notifications = not self.profile.notifications
 
 
-@template(route="/profile", title="Profile")
+@template(route="/settings/profile", title="Profile")
 def profile() -> rx.Component:
     """The profile page.
 

@@ -1,10 +1,7 @@
-"""The about page."""
-
-from pathlib import Path
+"""The stamp page."""
 
 import reflex as rx
 
-from ... import styles
 from ...templates import template
 
 
@@ -15,4 +12,4 @@ def stamp() -> rx.Component:
     Returns:
         The UI for the stamp page.
     """
-    return rx.text("Stamp")
+    return rx.text("Stamp Page")
