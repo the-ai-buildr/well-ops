@@ -2,23 +2,17 @@
 
 import reflex as rx
 
+from ...components.card import card
+from ...components.stepper import StepperStep, horizontal_stepper
 from ...templates import template
 
-def_project_stepper() -> rx.Component:
-    """The project setup page.
 
-    Returns:
-        The UI for the project setup page.
-    """
-    container = rx.container(
-        rx.vstack(
-            rx.heading("Project Setup", size="5"),
-            rx.text("This is the project setup page."),
-        )
-    )
-    
-    return rx.text("Project Setup Page")
-
+PROJECT_SETUP_STEPS = [
+    StepperStep("Details", "clipboard-list", "Scope"),
+    StepperStep("Design", "drafting-compass", "Layout"),
+    StepperStep("Review", "search-check", "Verify"),
+    StepperStep("Launch", "rocket", "Ship"),
+]
 
 
 @template(route="/projects/setup", title="Setup")
@@ -28,4 +22,20 @@ def setup() -> rx.Component:
     Returns:
         The UI for the setup page.
     """
-    return rx.text("Setup Page")
+    return rx.vstack(
+        rx.heading("Project Setup", size="5"),
+        horizontal_stepper(
+            PROJECT_SETUP_STEPS,
+            active_step=1,
+            container=card(
+                rx.vstack(
+                    rx.heading("Design", size="4"),
+                    rx.text("Configure the project layout, tools, and handoff plan."),
+                    spacing="2",
+                    width="100%",
+                ),
+            ),
+        ),
+        spacing="5",
+        width="100%",
+    )
