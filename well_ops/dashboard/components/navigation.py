@@ -46,6 +46,21 @@ def _group_title(group: str) -> str:
     return group.replace("-", " ").title()
 
 
+def _row_style(active) -> dict:
+    return {
+        "_hover": {
+            "background_color": rx.cond(
+                active,
+                styles.accent_bg_color,
+                styles.gray_bg_color,
+            ),
+            "color": rx.cond(active, styles.accent_text_color, styles.text_color),
+            "opacity": "1",
+        },
+        "opacity": rx.cond(active, "1", "0.9"),
+    }
+
+
 def get_nav_sections() -> list[dict]:
     from reflex.page import DECORATED_PAGES
 
@@ -113,7 +128,7 @@ def nav_link(
     icon_size: int,
     padding_left: str,
     text_size: str,
-) -> rx.Component:
+ ) -> rx.Component:
     active = rx.State.router.page.path == entry["route"]
 
     return rx.link(
@@ -121,22 +136,7 @@ def nav_link(
             rx.icon(entry["icon"], size=icon_size),
             rx.text(entry["title"], size=text_size, weight="regular"),
             color=rx.cond(active, styles.accent_text_color, styles.text_color),
-            style={
-                "_hover": {
-                    "background_color": rx.cond(
-                        active,
-                        styles.accent_bg_color,
-                        styles.gray_bg_color,
-                    ),
-                    "color": rx.cond(
-                        active,
-                        styles.accent_text_color,
-                        styles.text_color,
-                    ),
-                    "opacity": "1",
-                },
-                "opacity": rx.cond(active, "1", "0.95"),
-            },
+            style=_row_style(active),
             align="center",
             border_radius=styles.border_radius,
             width="100%",
@@ -162,21 +162,14 @@ def nav_group(
         rx.accordion.item(
             header=rx.hstack(
                 rx.icon(section["icon"], size=icon_size),
-                rx.text(section["title"], size=text_size, weight="regular"),
+                rx.text(section["title"], size=text_size, weight="medium"),
                 align="center",
                 border_radius=styles.border_radius,
-                color=styles.text_color,
+                color=styles.gray_color,
                 padding="0.6em",
                 padding_left=padding_left,
                 spacing="2",
-                style={
-                    "_hover": {
-                        "background_color": styles.gray_bg_color,
-                        "color": styles.text_color,
-                        "opacity": "1",
-                    },
-                    "opacity": "0.95",
-                },
+                style={"opacity": "0.9"},
                 width="100%",
             ),
             content=rx.vstack(
@@ -189,13 +182,32 @@ def nav_group(
                     )
                     for item in section["items"]
                 ],
+                border_left=styles.border,
                 spacing="0",
                 width="100%",
             ),
+            padding="0",
             value=section["key"],
         ),
         collapsible=True,
-        default_value=section["key"],
+        padding="0",
+        style={
+            ".AccordionItem": {
+                "border_top": "0",
+                "border_bottom": "0",
+                "margin_top": "0",
+            },
+            ".AccordionTrigger": {
+                "box_shadow": "none",
+                "color": styles.gray_color,
+                "font_size": "inherit",
+                "line_height": "inherit",
+                "outline": "none",
+                "padding": "0",
+                "_hover": {"background_color": styles.gray_bg_color},
+            },
+            ".AccordionChevron": {"color": styles.gray_color},
+        },
         type="single",
         variant="ghost",
         width="100%",

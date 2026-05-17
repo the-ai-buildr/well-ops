@@ -50,7 +50,7 @@ def menu_button() -> rx.Component:
                     rx.divider(),
                     rx.vstack(
                         *nav_sections(
-                            child_padding_left="2em",
+                            child_padding_left="0.85em",
                             icon_size=20,
                             padding_left="0.85em",
                             text_size="4",

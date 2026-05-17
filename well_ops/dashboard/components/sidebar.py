@@ -14,15 +14,12 @@ def sidebar_header() -> rx.Component:
 
     """
     return rx.hstack(
-        rx.color_mode_cond(
-            rx.image(src="assets/reflex_black.svg", height="1.5em"),
-            rx.image(src="assets/reflex_white.svg", height="1.5em"),
-        ),
+        rx.heading("Well-Ops", size="5", weight="bold"),
         rx.spacer(),
         align="center",
         width="100%",
-        padding="2em",
-        margin="2em",
+        padding="0.35em",
+        margin_bottom="1em",
     )
 
 
@@ -51,7 +48,7 @@ def sidebar_footer() -> rx.Component:
         justify="start",
         align="center",
         width="100%",
-        padding="2em",
+        padding="0.35em",
     )
 
 
@@ -66,12 +63,12 @@ def sidebar() -> rx.Component:
             sidebar_header(),
             rx.vstack(
                 *nav_sections(
-                    child_padding_left="2em",
+                    child_padding_left="0.75em",
                     icon_size=18,
-                    padding_left="0.75em",
+                    padding_left="0.6em",
                     text_size="3",
                 ),
-                spacing="0",
+                spacing="1",
                 width="100%",
             ),
             rx.spacer(),
@@ -80,7 +77,7 @@ def sidebar() -> rx.Component:
             align="end",
             width=styles.sidebar_content_width,
             height="100dvh",
-            padding="2em",
+            padding="1em",
         ),
         display=["none", "none", "none", "none", "none", "flex"],
         max_width=styles.sidebar_width,
@@ -91,5 +88,6 @@ def sidebar() -> rx.Component:
         top="0px",
         left="0px",
         flex="1",
-        bg=rx.color("blue", 2),
+        bg=rx.color("gray", 1),
+        border_right=styles.border,
     )
