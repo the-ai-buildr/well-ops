@@ -88,10 +88,6 @@ def navbar() -> rx.Component:
         rx.hstack(
             menu_button(),
             rx.spacer(),
-            rx.color_mode_cond(
-                rx.image(src="/reflex_black.svg", height="0.25em"),
-                rx.image(src="/reflex_white.svg", height="0.25em"),
-            ),
             align="center",
             width="100%",
             height="42px",

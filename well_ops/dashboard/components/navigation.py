@@ -4,18 +4,32 @@ import reflex as rx
 
 from .. import styles
 
+PROJECT_ROUTE_ORDER = [
+    "/projects/my-projects",
+    "/projects/index",
+    "/projects/setup",
+    "/projects/designer",
+]
+
 ROUTE_ORDER = [
     "/",
+    *PROJECT_ROUTE_ORDER,
+    # "/apps/index",
     "/tools/index",
+    "/tools/cement",
     "/tools/stamp",
+    "/tools/scheduler",
     "/table",
     "/about",
     "/settings/profile",
-    "/settings/settings",
+    "/settings/prefs",
 ]
+
+HIDDEN_NAV_GROUPS = {"apps"}
 
 GROUP_ICONS = {
     "apps": "app-window",
+    "projects": "folder-kanban",
     "settings": "settings",
     "tools": "wrench",
 }
@@ -23,10 +37,17 @@ GROUP_ICONS = {
 ROUTE_ICONS = {
     "/": "home",
     "/about": "book-open",
+    "/apps/index": "app-window",
+    "/projects/designer": "pen-tool",
+    "/projects/index": "folder-kanban",
+    "/projects/my-projects": "folder-kanban",
+    "/projects/setup": "list-checks",
+    "/settings/prefs": "sliders-horizontal",
     "/settings/profile": "user",
-    "/settings/settings": "settings",
     "/table": "table-2",
+    "/tools/cement": "factory",
     "/tools/index": "wrench",
+    "/tools/scheduler": "calendar-clock",
     "/tools/stamp": "stamp",
 }
 
@@ -94,6 +115,9 @@ def get_nav_sections() -> list[dict]:
             continue
 
         group_key = route_parts[0]
+        if group_key in HIDDEN_NAV_GROUPS:
+            continue
+
         group = groups.get(group_key)
         if group is None:
             group = {
@@ -128,7 +152,7 @@ def nav_link(
     icon_size: int,
     padding_left: str,
     text_size: str,
- ) -> rx.Component:
+) -> rx.Component:
     active = rx.State.router.page.path == entry["route"]
 
     return rx.link(
@@ -190,6 +214,7 @@ def nav_group(
             value=section["key"],
         ),
         collapsible=True,
+        default_value=section["key"] if section["key"] == "projects" else None,
         padding="0",
         style={
             ".AccordionItem": {

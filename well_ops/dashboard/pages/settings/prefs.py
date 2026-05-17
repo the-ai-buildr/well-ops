@@ -8,12 +8,12 @@ from ...views.radius_picker import radius_picker
 from ...views.scaling_picker import scaling_picker
 
 
-@template(route="/settings/settings", title="Settings")
-def settings() -> rx.Component:
-    """The settings page.
+@template(route="/settings/prefs", title="Preferences")
+def prefs() -> rx.Component:
+    """The preferences page.
 
     Returns:
-        The UI for the settings page.
+        The UI for the preferences page.
 
     """
     return rx.vstack(
@@ -40,6 +40,6 @@ def settings() -> rx.Component:
         ),
         radius_picker(),
         scaling_picker(),
-        spacing="7",
+        spacing="5",
         width="100%",
     )
