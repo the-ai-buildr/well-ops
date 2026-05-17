@@ -1,0 +1,11 @@
+
+assets/external/
+*.db
+*.py[cod]
+.cursorignore
+.venv/
+.vscode/
+.env*
+.web
+__pycache__/
+venv/

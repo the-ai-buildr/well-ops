@@ -1,0 +1,9 @@
+/* Global styles for WellOps */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
