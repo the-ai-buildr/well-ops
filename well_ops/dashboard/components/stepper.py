@@ -11,20 +11,19 @@ from .. import styles
 class StepperStep:
     title: str
     icon: str = "circle"
-    description: str | None = None
 
 
 def _step_marker(step: StepperStep, index: int, active_step: int) -> rx.Component:
-    is_complete = index < active_step
-    is_active = index == active_step
-    is_reached = index <= active_step
+    is_complete = active_step > index
+    is_active = active_step == index
+    is_reached = active_step >= index
 
     return rx.vstack(
         rx.box(
-            rx.icon(
-                "check" if is_complete else step.icon,
-                size=18,
-                stroke_width=2,
+            rx.cond(
+                is_complete,
+                rx.icon("check", size=16, stroke_width=2),
+                rx.icon(step.icon, size=16, stroke_width=2),
             ),
             align_items="center",
             background_color=rx.cond(
@@ -33,7 +32,11 @@ def _step_marker(step: StepperStep, index: int, active_step: int) -> rx.Componen
                 styles.gray_bg_color,
             ),
             border="1px solid",
-            border_color=rx.cond(is_reached, styles.accent_text_color, rx.color("gray", 6)),
+            border_color=rx.cond(
+                is_reached,
+                styles.accent_text_color,
+                rx.color("gray", 6),
+            ),
             border_radius="999px",
             color=rx.cond(
                 is_reached,
@@ -41,9 +44,9 @@ def _step_marker(step: StepperStep, index: int, active_step: int) -> rx.Componen
                 styles.gray_color,
             ),
             display="flex",
-            height="2.25rem",
+            height="2rem",
             justify_content="center",
-            width="2.25rem",
+            width="2rem",
         ),
         rx.vstack(
             rx.text(
@@ -52,16 +55,6 @@ def _step_marker(step: StepperStep, index: int, active_step: int) -> rx.Componen
                 size="2",
                 weight=rx.cond(is_active, "medium", "regular"),
                 text_align="center",
-            ),
-            rx.cond(
-                step.description is not None,
-                rx.text(
-                    step.description or "",
-                    color=styles.gray_color,
-                    size="1",
-                    text_align="center",
-                ),
-                rx.fragment(),
             ),
             align="center",
             spacing="1",
@@ -75,14 +68,14 @@ def _step_marker(step: StepperStep, index: int, active_step: int) -> rx.Componen
 def _step_connector(index: int, active_step: int) -> rx.Component:
     return rx.box(
         background_color=rx.cond(
-            index < active_step,
+            active_step > index,
             styles.accent_text_color,
             rx.color("gray", 5),
         ),
         flex="1",
         height="1px",
         min_width="2rem",
-        margin_top="1.125rem",
+        margin_top="1rem",
     )
 
 
@@ -91,7 +84,7 @@ def horizontal_stepper(
     *,
     active_step: int = 0,
     container: rx.Component | None = None,
-) -> rx.Component:
+ ) -> rx.Component:
     """Render a configurable horizontal multi-step indicator.
 
     Args:
@@ -114,6 +107,6 @@ def horizontal_stepper(
             width="100%",
         ),
         container or rx.fragment(),
-        spacing="6",
+        spacing="2",
         width="100%",
     )
